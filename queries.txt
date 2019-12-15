@@ -1,0 +1,28 @@
+query citizenById {
+  citizen(id: 2) {
+    firstName
+    lastName
+    address {
+      city
+      street
+    }
+    idfRecord {
+      idfServedDays {
+        year
+        days
+      }
+    }
+  }
+}
+
+query citizensByStatus {
+  citizens(status:FOREIGNER) {
+    firstName
+    lastName
+    address {
+      city
+      street
+    },
+    idfRecord{idfServedDays{year}}
+  }
+}

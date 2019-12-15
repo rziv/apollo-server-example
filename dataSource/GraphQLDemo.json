@@ -1,0 +1,9 @@
+{
+"addresses" : [
+  { "id": 10, "citizenId": 1, "city": "חיפה", "street": "יפו" },
+  { "id": 20, "citizenId": 2, "city": "תל אביב", "street": "הירקון" },
+  { "id": 30, "citizenId": 3, "city": "ירושלים", "street": "הנביאים" },
+  { "id": 40, "citizenId": 4, "city": "תל אביב", "street": "אלנבי" },
+  { "id": 50, "citizenId": 5, "city": "ירושלים", "street": "בן יהודה" }  
+]
+}

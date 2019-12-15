@@ -12,6 +12,7 @@ const typeDefs = gql`
     lastName: String
     address: Address
     idfRecord: IDFRecord
+    status: CitizenshipStatus
   }
 
   type Address {
@@ -37,8 +38,11 @@ const typeDefs = gql`
 
   # The "Query" type is the root of all GraphQL queries.
   type Query {
-    citizen(id: Int!): Citizen
-  }
+    citizen(id: Int!): Citizen,
+    citizens(status: CitizenshipStatus): [Citizen]
+  }  
+
+  enum CitizenshipStatus { 	PERMANENT TEMPORARY FOREIGNER }
 `;
 
 // Resolvers define the technique for fetching the types in the
@@ -47,14 +51,18 @@ const resolvers = {
   Query: {
     citizen: (_, { id }) => {
       return preload.citizens.find(c => c.id == id);
+    },
+    citizens: (_, { status }) => {
+      return preload.citizens.filter(c => !status || c.status === status);
     }
   },
   Citizen: {
-    address: async function(citizen, _, { dataSources }) {
+    address: async function(citizen, _, { dataSources }) {  
       return dataSources.addressAPI.getAddress(citizen.id);
     },
-    idfRecord: async (citizen, _, { dataSources }) =>
-      dataSources.idfAPI.getIDFRecord(citizen.id)
+    idfRecord: async (citizen, _, { dataSources }) => {
+     return preload.IDFRecords.find(idf=>idf.citizenId === citizen.id);
+    }
   },
   IDFRecord: {
     idfServedDays: idfRecord => idfRecord.servedDays
