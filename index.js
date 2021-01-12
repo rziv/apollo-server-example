@@ -2,14 +2,19 @@ const { preload } = require("./preload");
 const { idfAPI } = require("./RestAPI/idfAPI");
 const { addressAPI } = require("./RestAPI/addressAPI");
 const { ApolloServer, gql } = require("apollo-server");
+const RestrictedDirective = require("./directives/RestrictedDirective")
+const LengthDirective = require("./directives/LengthDirective")
 
 // Type definitions define the "shape" of your data and specify
 // which ways the data can be fetched from the GraphQL server.
 const typeDefs = gql`
+  directive @restricted(owner: String) on FIELD_DEFINITION
+  directive @length(max: Int) on FIELD_DEFINITION | INPUT_FIELD_DEFINITION
+
   type Citizen {
     id: Int!
-    firstName: String
-    lastName: String
+    firstName: String @length(max:100)
+    lastName: String @restricted(owner: "MOIN")
     address: Address
     idfRecord: IDFRecord
     status: CitizenshipStatus
@@ -20,7 +25,7 @@ const typeDefs = gql`
     כתובת האזרח כפי שרשומה ברשות האוכלוסין
     """
     id: Int!
-    city: String
+    city: String @length(max:20)
     street: String
     citizen: Citizen
   }
@@ -87,7 +92,11 @@ const server = new ApolloServer({
   },
   context: ({ req }) => ({
     idNum: req.headers.idNum
-  })
+  }),
+  schemaDirectives: {
+    restricted: RestrictedDirective,
+    length: LengthDirective
+  }
 });
 
 // This `listen` method launches a web-server.  Existing apps

@@ -26,3 +26,30 @@ query citizensByStatus {
     idfRecord{idfServedDays{year}}
   }
 }
+
+query introspect_custom_types {
+__schema {
+ 		queryType {
+      name
+      fields
+      {
+        name
+        description
+        args{
+          name
+        }
+        type
+        {
+          fields
+          {
+            name
+            type {
+              name
+            }
+           
+          }
+        }
+      }
+    }
+  }
+}
