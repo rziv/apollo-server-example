@@ -31,7 +31,7 @@ module.exports = class LengthDirective extends SchemaDirectiveVisitor {
   class LimitedLengthType extends GraphQLScalarType {
     constructor(type, maxLength) {
       super({
-        name: `LengthAtMost${maxLength}`,
+        name: `${type}_LengthAtMost${maxLength}`,
   
         // For more information about GraphQLScalar type (de)serialization,
         // see the graphql-js implementation:

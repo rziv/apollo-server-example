@@ -31,7 +31,7 @@ module.exports = class RestrictedDirective extends SchemaDirectiveVisitor {
 class RestrictedFieldType extends GraphQLScalarType {
   constructor(type, owner) {
     super({
-      name: `Restricted${owner? '_'+owner:''}`,
+      name: `${type}_Restricted${owner? '_'+owner:''}`,
 
       // For more information about GraphQLScalar type (de)serialization,
       // see the graphql-js implementation:
